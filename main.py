@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:32553964@localhost/residencias'
@@ -42,14 +43,25 @@ class Pergunta(db.Model):
 
 @app.route('/dimensao', methods=['POST'])
 def addDimensao():
-    entry = Dimensao('teste')
-
+    data = request.get_json()
+    nome = data['nome']
+    entry = Dimensao(nome)
     db.session.add(entry)
     db.session.commit()
 
-    return '201'
+    return {'data':{'nome':nome}}, 201
 
+@app.route('/atributo', methods=['POST'])
+def addAtributo():
+    data = request.get_json()
+    id_dimensao = data['id_dimensao']
+    nome = data['nome']
 
+    entry = Atributo(nome, id_dimensao)
+    db.session.add(entry)
+    db.session.commit()
+
+    return {'data':{'nome':nome}}, 201
 
 if __name__ == '__main__':
     db.create_all()
