@@ -1,68 +1,26 @@
-from flask import Flask, request
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+
+from config import db
+from routes.atributo_bp import atributo_bp
+from routes.dimensao import dimension_bp
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:32553964@localhost/residencias'
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = '32553964'
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:32553964@localhost/residencias'
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.secret_key = '32553964'
 
-db = SQLAlchemy(app)
+    app.register_blueprint(atributo_bp)
+    app.register_blueprint(dimension_bp)
 
-class Dimensao(db.Model):
-    __tablename__ = 'dimensao'
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
-    id_dimensao = db.Column(db.Integer, primary_key = True)
-    nome = db.Column(db.String)
-    atributos= db.relationship('Atributo', backref='dimensao', lazy=True)
-
-    def __init__(self, nome):
-        self.nome = nome
-
-class Atributo(db.Model):
-    __tablename__ = 'atributo'
-    id_atributo = db.Column(db.Integer, primary_key = True)
-    nome = db.Column(db.String)
-    id_dimensao = db.Column(db.Integer, db.ForeignKey('dimensao.id_dimensao'))
-    perguntas= db.relationship('Pergunta', backref='atributo', lazy=True)
-
-
-    def __init__(self, nome, id_dimensao):
-        self.nome = nome
-        self.id_dimensao= id_dimensao
-
-class Pergunta(db.Model):
-    __tablename__ = 'pergunta'
-    id_pergunta = db.Column(db.Integer, primary_key = True)
-    nome = db.Column(db.String)
-    id_atributo = db.Column(db.Integer, db.ForeignKey('atributo.id_atributo'))
-
-    def __init__(self, nome, id_atributo):
-        self.nome = nome
-        self.id_atributo= id_atributo 
-
-@app.route('/dimensao', methods=['POST'])
-def addDimensao():
-    data = request.get_json()
-    nome = data['nome']
-    entry = Dimensao(nome)
-    db.session.add(entry)
-    db.session.commit()
-
-    return {'data':{'nome':nome}}, 201
-
-@app.route('/atributo', methods=['POST'])
-def addAtributo():
-    data = request.get_json()
-    id_dimensao = data['id_dimensao']
-    nome = data['nome']
-
-    entry = Atributo(nome, id_dimensao)
-    db.session.add(entry)
-    db.session.commit()
-
-    return {'data':{'nome':nome}}, 201
+    return app
 
 if __name__ == '__main__':
-    db.create_all()
+    app = create_app()
+    #app.debug = True
     app.run()
