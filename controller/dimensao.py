@@ -46,4 +46,11 @@ def getDimension():
 
 
 def getAllDimension():
-    return 0
+    results = db.engine.execute(
+        f'''
+            SELECT * FROM dimensao    
+        '''
+    )
+    return '200'
+
+
