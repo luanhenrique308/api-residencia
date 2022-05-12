@@ -15,6 +15,13 @@ def createAtributo():
 
     return {'data':{'nome':nome}}, 201
 
+def removeAtributo(id_atributo):
+    results = db.engine(
+        '''
+            
+        '''
+    )
+
 def getAtributo(id_atributo):
     return 0
 

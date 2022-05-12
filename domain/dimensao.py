@@ -7,5 +7,6 @@ class Dimensao(db.Model):
     nome = db.Column(db.String)
     atributos= db.relationship('Atributo', backref='dimensao', lazy=True)
 
+
     def __init__(self, nome):
         self.nome = nome
