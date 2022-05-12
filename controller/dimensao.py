@@ -35,8 +35,14 @@ def editDimension(id_dimension):
     return 0
 
 
-def getDimension(id_dimension):
-    return 0
+def getDimension():
+    args = request.args
+    results = db.engine.execute(
+        f'''
+                SELECT * FROM dimensao WHERE id_dimensao = '{args.get('id_dimension')}'    
+            '''
+    )
+    return '200'
 
 
 def getAllDimension():
