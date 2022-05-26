@@ -1,12 +1,12 @@
 import json
-
 from flask import request, jsonify
-
 from config import db
+from controller.pergunta import deleteQuestion
 from domain.atributo import Atributo
 
 
-def createAtributo():
+
+def createAttribute():
     data = request.get_json()
     id_dimensao = data['id_dimensao']
     nome = data['nome']
@@ -19,13 +19,20 @@ def createAtributo():
 
 def deleteAtributo(id_dimensao = 0):
     data = request.get_json()
+
     if(id_dimensao != 0):
+        print("LALLA")
+        dbExecute = db.session.query(Atributo.id_atributo).filter(Atributo.id_dimensao == id_dimensao)
+        results = db.session.execute(dbExecute)
+        for id_atributte in results:
+             deleteQuestion(id_atributte[0])
         db.engine.execute(
             f'''
                     DELETE FROM atributo WHERE id_dimensao = '{data['id_dimensao']}'
                 '''
         )
     else:
+        deleteQuestion(data['id_atributo'])
         db.engine.execute(
             f'''
 
