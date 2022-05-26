@@ -19,9 +19,7 @@ def createAttribute():
 
 def deleteAtributo(id_dimensao = 0):
     data = request.get_json()
-
     if(id_dimensao != 0):
-        print("LALLA")
         dbExecute = db.session.query(Atributo.id_atributo).filter(Atributo.id_dimensao == id_dimensao)
         results = db.session.execute(dbExecute)
         for id_atributte in results:
