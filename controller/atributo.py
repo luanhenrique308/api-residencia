@@ -9,21 +9,40 @@ def createAtributo():
     id_dimensao = data['id_dimensao']
     nome = data['nome']
 
-    entry = Atributo('luan',1)
+    entry = Atributo(nome,id_dimensao)
     db.session.add(entry)
     db.session.commit()
 
-    return {'data':{'nome':nome}}, 201
+    return "201"
 
-def removeAtributo(id_atributo):
-    results = db.engine(
-        '''
-            
-        '''
-    )
+def deleteAtributo(id_dimensao = 0):
+    data = request.get_json()
+    # id_atributo = data['id_atributo']
+    # print(args.get('id_dimensao'))
+    #
+    if(id_dimensao != 0):
+        results = db.engine.execute(
+            f'''
+                    DELETE FROM atributo WHERE id_dimensao = '{data['id_dimensao']}'
+                '''
+        )
+    else:
+        results = db.engine.execute(
+            f'''
+
+                            DELETE FROM atributo WHERE id_atributo = '{data['id_atributo']}'    
+                        '''
+        )
+    return '200'
 
 def getAtributo(id_atributo):
-    return 0
+    return '0'
 
 def getAllAtributos():
-    return 0
+    results = db.engine.execute(
+        f'''
+                SELECT * FROM atributo    
+            '''
+    )
+
+    return '200'
