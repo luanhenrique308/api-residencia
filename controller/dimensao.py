@@ -1,6 +1,7 @@
 from flask import request, jsonify
 
 from config import db
+from controller.atributo import deleteAtributo
 from domain.dimensao import Dimensao
 
 
@@ -11,21 +12,16 @@ def createDimension():
     db.session.add(entry)
     db.session.commit()
 
-    dimensionAll = Dimensao.query.all()
-
-    def d():
-        for val in dimensionAll:
-            return val.nome
-
     return '201'
 
 
 def deleteDimension():
-    args = request.args
-    print(args.get('id_dimension'))
+    data = request.get_json()
+    id_dimensao = data['id_dimensao']
+    deleteAtributo(id_dimensao)
     results = db.engine.execute(
         f'''
-            DELETE FROM dimensao WHERE id_dimensao = '{args.get('id_dimension')}'    
+            DELETE FROM dimensao WHERE id_dimensao = '{id_dimensao}'   
         '''
         )
     return '200'
@@ -36,10 +32,12 @@ def editDimension(id_dimension):
 
 
 def getDimension():
-    args = request.args
+    data = request.get_json()
+    id = data['id_dimensao']
+    # args = request.args
     results = db.engine.execute(
         f'''
-                SELECT * FROM dimensao WHERE id_dimensao = '{args.get('id_dimension')}'    
+                SELECT * FROM dimensao WHERE id_dimensao = '{id}'    
             '''
     )
     return '200'
