@@ -12,7 +12,7 @@ def createDimension():
     db.session.add(entry)
     db.session.commit()
 
-    return '201'
+    return getAllDimension()
 
 
 def deleteDimension():
@@ -24,7 +24,7 @@ def deleteDimension():
             DELETE FROM dimensao WHERE id_dimensao = '{id_dimensao}'   
         '''
         )
-    return '200'
+    return getAllDimension()
 
 
 def editDimension(id_dimension):
@@ -40,7 +40,8 @@ def getDimension():
                 SELECT * FROM dimensao WHERE id_dimensao = '{id}'    
             '''
     )
-    return '200'
+
+    return jsonify({"data": [dict(result) for result in results]}), 200
 
 
 def getAllDimension():
@@ -49,6 +50,7 @@ def getAllDimension():
             SELECT * FROM dimensao    
         '''
     )
-    return '200'
+
+    return jsonify({"data": [dict(result) for result in results ]}), 200
 
 
