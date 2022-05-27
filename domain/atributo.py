@@ -1,6 +1,5 @@
 from config import db
 
-
 class Atributo(db.Model):
     __tablename__ = 'atributo'
     perguntas= db.relationship('Pergunta', backref='atributo')
