@@ -3,6 +3,7 @@ from flask import Flask
 from config import db
 from routes.atributo_bp import atributo_bp
 from routes.dimensao import dimension_bp
+from routes.formulario import form_bp
 from routes.pergunta import question_bp
 from routes.tdd import tdd_bp
 
@@ -17,6 +18,7 @@ def create_app():
     app.register_blueprint(dimension_bp)
     app.register_blueprint(question_bp)
     app.register_blueprint(tdd_bp)
+    app.register_blueprint(form_bp)
 
     db.init_app(app)
     with app.app_context():
