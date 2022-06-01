@@ -1,30 +1,30 @@
 from flask import request, jsonify
 
 from config import db
-from controller.atributo import deleteAtributo
-from domain.dimensao import Dimensao
+from controller.atributo import deleteAttribute
+from domain.dimensao import Dimension
 
 
 def createDimension():
     data = request.get_json()
-    nome = data['nome']
-    entry = Dimensao(nome)
+    name_dimension = data['name_dimension']
+    entry = Dimension(name_dimension)
     db.session.add(entry)
     db.session.commit()
 
-    return getAllDimension()
+    return getAllDimensions()
 
 
 def deleteDimension():
     data = request.get_json()
-    id_dimensao = data['id_dimensao']
-    deleteAtributo(id_dimensao)
+    id_dimension = data['id_dimension']
+    deleteAttribute(id_dimension)
     results = db.engine.execute(
         f'''
-            DELETE FROM dimensao WHERE id_dimensao = '{id_dimensao}'   
+            DELETE FROM dimension WHERE id_dimension = '{id_dimension}'   
         '''
         )
-    return getAllDimension()
+    return getAllDimensions()
 
 
 def editDimension(id_dimension):
@@ -33,24 +33,24 @@ def editDimension(id_dimension):
 
 def getDimension():
     data = request.get_json()
-    id = data['id_dimensao']
+    id_dimension = data['id_dimension']
     # args = request.args
     results = db.engine.execute(
         f'''
-                SELECT * FROM dimensao WHERE id_dimensao = '{id}'    
+                SELECT * FROM dimension WHERE id_dimension = '{id_dimension}'    
             '''
     )
 
-    return jsonify({"data": [dict(result) for result in results]}), 200
+    return jsonify({"dimension": [dict(result) for result in results]}), 200
 
 
-def getAllDimension():
+def getAllDimensions():
     results = db.engine.execute(
         f'''
-            SELECT * FROM dimensao    
+            SELECT * FROM dimension    
         '''
     )
 
-    return jsonify({"data": [dict(result) for result in results ]}), 200
+    return jsonify({"dimensions": [dict(result) for result in results]}), 200
 
 

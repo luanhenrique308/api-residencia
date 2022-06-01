@@ -1,7 +1,7 @@
 from flask import Flask
 
 from config import db
-from routes.atributo_bp import atributo_bp
+from routes.atributo_bp import attribute_bp
 from routes.dimensao import dimension_bp
 from routes.formulario import form_bp
 from routes.pergunta import question_bp
@@ -14,7 +14,7 @@ def create_app():
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.secret_key = '32553964'
 
-    app.register_blueprint(atributo_bp)
+    app.register_blueprint(attribute_bp)
     app.register_blueprint(dimension_bp)
     app.register_blueprint(question_bp)
     app.register_blueprint(tdd_bp)

@@ -1,9 +1,9 @@
 from flask import Blueprint
 
-from controller.atributo import createAttribute, getAtributo, getAllAtributos, deleteAtributo
+from controller.atributo import createAttribute, getAttribute, getAllAttribute, deleteAttribute
 
-atributo_bp = Blueprint("atributo_bp", __name__)
-atributo_bp.route('/createAttribute', methods=['POST'])(createAttribute)
-atributo_bp.route('/deleteAttribute', methods=['DELETE'])(deleteAtributo)
-atributo_bp.route('/getAttribute', methods=['GET'])(getAtributo)
-atributo_bp.route('/getAllAtributo', methods=['GET'])(getAllAtributos)
+attribute_bp = Blueprint("attribute_bp", __name__)
+attribute_bp.route('/createAttribute', methods=['POST'])(createAttribute)
+attribute_bp.route('/deleteAttribute', methods=['DELETE'])(deleteAttribute())
+attribute_bp.route('/getAttribute', methods=['GET'])(getAttribute())
+attribute_bp.route('/getAllAttribute', methods=['GET'])(getAllAttribute())

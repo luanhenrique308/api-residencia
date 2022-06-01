@@ -2,61 +2,61 @@ import json
 from flask import request, jsonify
 from config import db
 from controller.pergunta import deleteQuestion
-from domain.atributo import Atributo
+from domain.atributo import Attribute
 
 
 
 def createAttribute():
     data = request.get_json()
-    id_dimensao = data['id_dimensao']
-    nome = data['nome']
+    id_dimension = data['id_dimension']
+    name_attribute = data['name_attribute']
 
-    entry = Atributo(nome,id_dimensao)
+    entry = Attribute(name_attribute, id_dimension)
     db.session.add(entry)
     db.session.commit()
 
-    return getAllAtributos()
+    return getAllAttribute()
 
-def deleteAtributo(id_dimensao = 0):
+def deleteAttribute(id_dimension = 0):
     data = request.get_json()
-    if(id_dimensao != 0):
-        dbExecute = db.session.query(Atributo.id_atributo).filter(Atributo.id_dimensao == id_dimensao)
+    if(id_dimension != 0):
+        dbExecute = db.session.query(Attribute.id_attribute).filter(Attribute.id_dimension == id_dimension)
         results = db.session.execute(dbExecute)
-        for id_atributte in results:
-             deleteQuestion(id_atributte[0])
+        for id_attribute in results:
+             deleteQuestion(id_attribute[0])
         db.engine.execute(
             f'''
-                    DELETE FROM atributo WHERE id_dimensao = '{data['id_dimensao']}'
+                    DELETE FROM attribute WHERE id_dimension = '{data['id_dimension']}'
                 '''
         )
     else:
-        deleteQuestion(data['id_atributo'])
+        deleteQuestion(data['id_attribute'])
         db.engine.execute(
             f'''
 
-                            DELETE FROM atributo WHERE id_atributo = '{data['id_atributo']}'    
+                            DELETE FROM attribute WHERE id_attribute = '{data['id_attribute']}'    
                         '''
         )
-    return getAllAtributos()
+    return getAllAttribute()
 
-def getAtributo():
+def getAttribute():
     data = request.get_json()
-    id_atributo =  data['id_atributo']
-    results =db.engine.execute(
+    id_attribute = data['id_attribute']
+    results = db.engine.execute(
         f'''
-            SELECT * FROM atributo WHERE id_atributo = '{id_atributo}'
+            SELECT * FROM attribute WHERE id_attribute = '{id_attribute}'
         '''
     )
 
-    return jsonify({"data": [dict(result) for result in results]}), 200
+    return jsonify({"attribute": [dict(result) for result in results]}), 200
 
 
 
-def getAllAtributos():
+def getAllAttribute():
     results = db.engine.execute(
         f'''
-                SELECT * FROM atributo    
+                SELECT * FROM attribute    
             '''
     )
 
-    return jsonify({"data": [dict(result) for result in results]}), 200
+    return jsonify({"attributes": [dict(result) for result in results]}), 200
