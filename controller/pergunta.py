@@ -1,55 +1,54 @@
 import json
 from flask import request, jsonify
 from config import db
-from domain.pergunta import Pergunta
+from domain.pergunta import Question
 
 
 def createQuestion():
     data = request.get_json()
-    id_atributo = data['id_atributo']
-    nome = data['nome']
+    id_attribute = data['id_attribute']
+    question = data['question']
 
-    entry = Pergunta(nome,id_atributo)
+    entry = Question(question, id_attribute)
     db.session.add(entry)
     db.session.commit()
 
     return getAllQuestion()
 
-def deleteQuestion(id_atributo = 0):
-    # print(id_atributo)
+def deleteQuestion(id_attribute = 0):
     data = request.get_json()
-    if(id_atributo != 0):
+    if(id_attribute != 0):
         db.engine.execute(
             f'''
-                    DELETE FROM pergunta WHERE id_atributo = '{id_atributo}'    
+                    DELETE FROM question WHERE id_attribute = '{id_attribute}'    
                 '''
         )
     else:
         db.engine.execute(
                 f'''
-                    DELETE FROM pergunta WHERE id_pergunta = '{data['id_question']}'    
+                    DELETE FROM question WHERE id_question = '{data['id_question']}'    
                 '''
             )
     return getAllQuestion()
 
 def getQuestion():
     data = request.get_json()
-    id_question =  data['id_question']
-    results =db.engine.execute(
+    id_question = data['id_question']
+    results = db.engine.execute(
         f'''
-            SELECT * FROM pergunta WHERE id_pergunta = '{id_question}'
+            SELECT * FROM question WHERE id_question = '{id_question}'
         '''
     )
 
-    return jsonify({"data": [dict(result) for result in results]}), 200
+    return jsonify({"question": [dict(result) for result in results]}), 200
 
 
 
 def getAllQuestion():
     results = db.engine.execute(
         f'''
-                SELECT * FROM pergunta    
+                SELECT * FROM question    
             '''
     )
 
-    return jsonify({"data": [dict(result) for result in results]}), 200
+    return jsonify({"questions": [dict(result) for result in results]}), 200
