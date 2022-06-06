@@ -6,6 +6,7 @@ from routes.dimensao import dimension_bp
 from routes.formulario import form_bp
 from routes.pergunta import question_bp
 from routes.tdd import tdd_bp
+from flask_cors import CORS
 
 
 def create_app():
@@ -19,6 +20,8 @@ def create_app():
     app.register_blueprint(question_bp)
     app.register_blueprint(tdd_bp)
     app.register_blueprint(form_bp)
+
+    CORS(app)
 
     db.init_app(app)
     with app.app_context():

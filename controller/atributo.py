@@ -44,13 +44,12 @@ def getAttribute():
     id_attribute = data['id_attribute']
     results = db.engine.execute(
         f'''
-            SELECT * FROM attribute WHERE id_attribute = '{id_attribute}'
+            SELECT * FROM attribute WHERE id_attribute = '{id_attribute}'    
+
         '''
     )
 
     return jsonify({"attribute": [dict(result) for result in results]}), 200
-
-
 
 def getAllAttribute():
     results = db.engine.execute(
