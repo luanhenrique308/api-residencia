@@ -1,5 +1,5 @@
 import json
-from flask import request, jsonify
+from flask import request, jsonify, Response
 from config import db
 from controller.pergunta import deleteQuestion
 from domain.atributo import Attribute
@@ -48,8 +48,9 @@ def getAttribute():
 
         '''
     )
-
-    return jsonify({"attribute": [dict(result) for result in results]}), 200
+    return {
+        "user": "John Doe"
+    }
 
 def getAllAttribute():
     results = db.engine.execute(
@@ -58,4 +59,6 @@ def getAllAttribute():
             '''
     )
 
-    return jsonify({"attributes": [dict(result) for result in results]}), 200
+    return {
+        "user": "John Doe"
+    }
