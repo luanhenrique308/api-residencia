@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 from flask import Flask
 
 from config import db
@@ -10,10 +15,10 @@ from flask_cors import CORS
 
 
 def create_app():
+
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:32553964@localhost/residencias'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("API_BD_URI")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.secret_key = '32553964'
 
     app.register_blueprint(attribute_bp)
     app.register_blueprint(dimension_bp)
