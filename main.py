@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 
 from routes.alternative import alternative_bp
+from routes.test import test_bp
 
 load_dotenv()
 
@@ -32,6 +33,7 @@ def create_app():
     app.register_blueprint(tdd_bp)
     app.register_blueprint(form_bp)
     app.register_blueprint(alternative_bp)
+    app.register_blueprint(test_bp)
 
     CORS(app)
 
