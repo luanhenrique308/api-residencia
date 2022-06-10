@@ -48,9 +48,8 @@ def getAttribute():
 
         '''
     )
-    return {
-        "user": "John Doe"
-    }
+
+    return jsonify({"attributes": [dict(result) for result in results]}), 200
 
 def getAllAttribute():
     results = db.engine.execute(
@@ -59,6 +58,4 @@ def getAllAttribute():
             '''
     )
 
-    return {
-        "user": "John Doe"
-    }
+    return jsonify({"attributes": [dict(result) for result in results]}), 200
