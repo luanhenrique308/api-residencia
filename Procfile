@@ -1,1 +1,1 @@
-web: gunicorn main:app heroku logs --tail
+web: gunicorn main:app
